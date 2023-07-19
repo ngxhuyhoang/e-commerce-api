@@ -13,7 +13,7 @@ async function bootstrap() {
     .addBearerAuth()
     .build();
 
-  console.log('Haha');
+  // console.log('Haha');
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
