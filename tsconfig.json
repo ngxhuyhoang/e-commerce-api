@@ -9,13 +9,29 @@
     "target": "ES2021",
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": "./",
+    "baseUrl": "./src",
+    "paths": {
+      "@*": ["/*"],
+      "@modules/*": ["modules/*"],
+      "@core/*": ["core/*"],
+      "@constants/*": ["constants/*"],
+      "@databases/*": ["databases/*"],
+      "@decorators/*": ["decorators/*"],
+      "@services/*": ["services/*"],
+      "@guards/*": ["guards/*"],
+      "@interfaces/*": ["interfaces/*"],
+      "@interceptors/*": ["interceptors/*"],
+      "@common/*": ["common/*"],
+      "@middlewares/*": ["middlewares/*"],
+      "@uploads/*": ["uploads/*"]
+    },
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "resolveJsonModule": true
   }
 }
