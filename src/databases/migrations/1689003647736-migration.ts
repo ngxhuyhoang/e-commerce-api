@@ -16,19 +16,11 @@ export class Migration1689003647736 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(
-      `ALTER TABLE \`user\` DROP FOREIGN KEY \`FK_6acfec7285fdf9f463462de3e9f\``,
-    );
-    await queryRunner.query(
-      `DROP INDEX \`IDX_54115ee388cdb6d86bb4bf5b2e\` ON \`account\``,
-    );
+    await queryRunner.query(`ALTER TABLE \`user\` DROP FOREIGN KEY \`FK_6acfec7285fdf9f463462de3e9f\``);
+    await queryRunner.query(`DROP INDEX \`IDX_54115ee388cdb6d86bb4bf5b2e\` ON \`account\``);
     await queryRunner.query(`DROP TABLE \`account\``);
-    await queryRunner.query(
-      `DROP INDEX \`REL_6acfec7285fdf9f463462de3e9\` ON \`user\``,
-    );
-    await queryRunner.query(
-      `DROP INDEX \`IDX_cace4a159ff9f2512dd4237376\` ON \`user\``,
-    );
+    await queryRunner.query(`DROP INDEX \`REL_6acfec7285fdf9f463462de3e9\` ON \`user\``);
+    await queryRunner.query(`DROP INDEX \`IDX_cace4a159ff9f2512dd4237376\` ON \`user\``);
     await queryRunner.query(`DROP TABLE \`user\``);
   }
 }

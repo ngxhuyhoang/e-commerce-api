@@ -7,11 +7,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
 
-  const config = new DocumentBuilder()
-    .setTitle('E Commerce API Docs')
-    .setVersion('1.0')
-    .addBearerAuth()
-    .build();
+  const config = new DocumentBuilder().setTitle('E Commerce API Docs').setVersion('1.0').addBearerAuth().build();
 
   // console.log('Haha');
 
