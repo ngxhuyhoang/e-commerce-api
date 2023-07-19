@@ -20,7 +20,6 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "prepare": "husky install",
     "upgrade-all": "npx yarn-upgrade-all",
     "migration:generate": "yarn build && ts-node node_modules/typeorm/cli.js migration:generate src/databases/migrations/migration -d src/databases/data-source.ts",
     "migration:revert": "ts-node node_modules/typeorm/cli.js migration:revert",
