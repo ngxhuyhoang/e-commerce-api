@@ -11,7 +11,7 @@ jobs:
     steps:
       # - run: cd project/project-management-api && git fetch origin -p && git merge origin/master && yarn install && yarn docker:deploy
       # - run: git fetch origin -p && git merge origin/master && yarn install && yarn docker:deploy
-      - run: cd /root/project/project-management-api && git fetch origin -p && git merge origin/master && npx yarn install && npx yarn docker:deploy
+      - run: cd /root/project/e-commerce-api && git fetch origin -p && git merge origin/main && npx yarn install && npx yarn docker:deploy
 
   # deploy:
   # runs-on: ubuntu-latest
