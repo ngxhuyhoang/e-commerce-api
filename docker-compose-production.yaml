@@ -28,7 +28,7 @@ services:
       - MYSQL_USER=hoang
       - MYSQL_PASSWORD=12345678
       - MYSQL_ROOT_PASSWORD=12345678
-      - MYSQL_DATABASE=project_management
+      - MYSQL_DATABASE=e_commerce_production
     ports:
       - 3306:3306
     networks:
