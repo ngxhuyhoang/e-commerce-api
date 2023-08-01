@@ -17,9 +17,9 @@ async function bootstrap() {
   const port = configService.get('PORT');
   const env = configService.get('NODE_ENV');
 
-  await app.listen(3000, () => {
+  await app.listen(port, () => {
     console.info(`Environment: ${env}`);
-    console.info(`Server is running on http://localhost:${port}}`);
+    console.info(`Server is running on http://localhost:${port}`);
     console.info(`Swagger docs http://localhost:${port}/docs`);
   });
 }
