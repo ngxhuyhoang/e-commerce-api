@@ -4,6 +4,9 @@ import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtStrategy } from './jwt.strategy';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { AccountEntity } from '@modules/account/entities/account.entity';
+import { ProfileEntity } from '@modules/profile/entities/profile.entity';
 
 @Module({
   imports: [
@@ -18,6 +21,7 @@ import { JwtStrategy } from './jwt.strategy';
         },
       }),
     }),
+    TypeOrmModule.forFeature([AccountEntity, ProfileEntity]),
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
