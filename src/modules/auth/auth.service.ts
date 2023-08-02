@@ -78,17 +78,13 @@ export class AuthService {
         },
       );
 
-      const createdAccount = await this._accountRepository.save(
-        this._accountRepository.create({
-          email: registerRequestDto.email,
-          password: hashPassword,
-          refreshToken: refreshToken,
-        }),
-      );
-
-      await this._profileRepository.save(
+      const createdAccount = await this._profileRepository.save(
         this._profileRepository.create({
-          account: createdAccount,
+          account: this._accountRepository.create({
+            email: registerRequestDto.email,
+            password: hashPassword,
+            refreshToken: refreshToken,
+          }),
         }),
       );
 

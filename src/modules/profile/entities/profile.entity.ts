@@ -4,13 +4,13 @@ import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 
 @Entity({ name: 'profile' })
 export class ProfileEntity extends BasedEntity {
-  @Column({ nullable: true, default: '' })
+  @Column({ nullable: true })
   firstName: string;
 
-  @Column({ nullable: true, default: '' })
+  @Column({ nullable: true })
   lastName: string;
 
-  @Column({ nullable: true, default: '' })
+  @Column({ nullable: true })
   avatarUrl: string;
 
   @Column({ nullable: true })
