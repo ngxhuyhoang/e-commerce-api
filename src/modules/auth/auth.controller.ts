@@ -1,15 +1,19 @@
-import { Controller, Post } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
+import { JwtAuthGuard } from '@guards/jwt-auth.guard';
+import { LoginRequestDto } from './dto/login-request.dto';
 
 @Controller('auth')
 @ApiTags('Authentication/Authorization')
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
-  async login() {
-    return await this.authService.login();
+  async login(@Body() loginRequestDto: LoginRequestDto) {
+    return await this.authService.login(loginRequestDto);
   }
 
   @Post('register')

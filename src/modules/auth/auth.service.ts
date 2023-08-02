@@ -1,14 +1,25 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { LoginRequestDto } from './dto/login-request.dto';
 
 @Injectable()
 export class AuthService {
-  login() {}
+  constructor(private readonly jwtService: JwtService) {}
+
+  async login(loginRequestDto: LoginRequestDto) {
+    try {
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
 
   register() {}
 
   logout() {}
 
-  forgotPassword() {}
+  forgotPassword() {
+    return 'forgot password';
+  }
 
   resetPassword() {}
 
