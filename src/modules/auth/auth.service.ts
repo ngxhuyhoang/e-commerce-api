@@ -8,6 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
 import { RegisterRequestDto } from './dto/register-request.dto';
+import { LogoutRequestDto } from './dto/logout-request.dto';
 
 @Injectable()
 export class AuthService {
@@ -86,6 +87,7 @@ export class AuthService {
       const savedUser = await this._profileRepository.save({ account });
       const accessToken: string = await this._jwtService.sign({
         userId: savedUser.id,
+        accountId: account.id,
         email: registerRequestDto.email,
       });
       return { accessToken, refreshToken: refreshToken };
@@ -94,7 +96,17 @@ export class AuthService {
     }
   }
 
-  logout() {}
+  async logout(accountId: number, logoutRequestDto: LogoutRequestDto) {
+    try {
+      const account = await this._accountRepository.findOne({
+        where: { id: accountId, refreshToken: logoutRequestDto.refreshToken },
+      });
+      await this._accountRepository.update(account.id, { refreshToken: '' });
+      return 'Logout successfully';
+    } catch (error) {
+      throw new BadRequestException(error.sqlMessage || error.message);
+    }
+  }
 
   forgotPassword() {
     return 'forgot password';
