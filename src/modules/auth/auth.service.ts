@@ -67,32 +67,38 @@ export class AuthService {
       }
       const salt = await bcrypt.genSalt();
       const hashPassword = await bcrypt.hash(registerRequestDto.password, salt);
+
       const refreshToken = await this._jwtService.sign(
         {
-          userId: registeredAccount.profile.id,
-          email: registeredAccount.email,
+          email: registerRequestDto.email,
         },
         {
           secret: this._configService.get<string>('JWT_REFRESH_TOKEN_SECRET'),
           expiresIn: this._configService.get<string>('JWT_REFRESH_TOKEN_EXPIRES_IN'),
         },
       );
-      const account = await this._accountRepository.save(
+
+      const createdAccount = await this._accountRepository.save(
         this._accountRepository.create({
           email: registerRequestDto.email,
           password: hashPassword,
           refreshToken: refreshToken,
         }),
       );
-      const savedUser = await this._profileRepository.save({ account });
+
+      await this._profileRepository.save(
+        this._profileRepository.create({
+          account: createdAccount,
+        }),
+      );
+
       const accessToken: string = await this._jwtService.sign({
-        userId: savedUser.id,
-        accountId: account.id,
         email: registerRequestDto.email,
+        accountId: createdAccount.id,
       });
       return { accessToken, refreshToken: refreshToken };
     } catch (error) {
-      throw new BadRequestException(error.sqlMessage || error.message);
+      throw new BadRequestException(error.message);
     }
   }
 

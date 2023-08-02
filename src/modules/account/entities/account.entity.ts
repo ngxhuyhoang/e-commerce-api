@@ -1,6 +1,6 @@
 import { BasedEntity } from '@common/based.entity';
 import { ProfileEntity } from '@modules/profile/entities/profile.entity';
-import { Column, Entity, OneToOne } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 
 @Entity({ name: 'account' })
 export class AccountEntity extends BasedEntity {
@@ -13,6 +13,5 @@ export class AccountEntity extends BasedEntity {
   @Column()
   refreshToken: string;
 
-  @OneToOne(() => ProfileEntity, (profile) => profile.account)
   profile: ProfileEntity;
 }
