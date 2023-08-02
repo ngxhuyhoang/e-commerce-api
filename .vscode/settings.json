@@ -1,5 +1,9 @@
 {
-  "yaml.schemas": {
-    "https://json.schemastore.org/github-workflow.json": "file:///Users/hoang/Code/e-commerce-api/.github/workflows/deploy.yaml"
-  }
+  "editor.tabSize": 2,
+  "files.exclude": {
+    "**/node_modules/**": true,
+    "**/dist/**": true
+  },
+  "typescript.inlayHints.parameterNames.suppressWhenArgumentMatchesName": true,
+  "javascript.inlayHints.parameterNames.suppressWhenArgumentMatchesName": true
 }
