@@ -13,6 +13,7 @@ services:
       - /usr/app/node_modules
     depends_on:
       - database
+      - redis
     ports:
       - 4200:4200
     networks:
@@ -33,6 +34,8 @@ services:
       - MYSQL_DATABASE=e_commerce_production
     ports:
       - 3306:3306
+    expose:
+      - 3306
     networks:
       - app-network
 
@@ -42,6 +45,8 @@ services:
     image: redis:alpine
     ports:
       - 6379:6379
+    expose:
+      - 6379
     networks:
       - app-network
 
