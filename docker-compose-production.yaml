@@ -1,24 +1,6 @@
 version: '3.8'
 
 services:
-  # Server
-  app:
-    build: .
-    container_name: e-commerce-api
-    command: node dist/main.js
-    restart: unless-stopped
-    env_file: .env.production
-    volumes:
-      - .:/usr/app/
-      - /usr/app/node_modules
-    depends_on:
-      - database
-      - redis
-    ports:
-      - 4200:4200
-    networks:
-      - app-network
-
   # MySQL
   database:
     # image: mysql/mysql-server:8.0.31-aarch64
@@ -47,6 +29,24 @@ services:
       - 6379:6379
     expose:
       - 6379
+    networks:
+      - app-network
+
+  # Server
+  app:
+    build: .
+    container_name: e-commerce-api
+    command: node dist/main.js
+    restart: unless-stopped
+    env_file: .env.production
+    volumes:
+      - .:/usr/app/
+      - /usr/app/node_modules
+    depends_on:
+      - database
+      - redis
+    ports:
+      - 4200:4200
     networks:
       - app-network
 
