@@ -15,5 +15,6 @@ export class BasedEntity {
   deletedAt: Date;
 
   @Column({ default: false })
+  @Index()
   isDeleted: boolean;
 }
