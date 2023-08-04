@@ -1,6 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ProfileService } from './profile.service';
-import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
@@ -11,8 +10,8 @@ export class ProfileController {
 
   @Post()
   @ApiOperation({ deprecated: true })
-  create(@Body() createProfileDto: CreateProfileDto) {
-    return this.profileService.create(createProfileDto);
+  create() {
+    return this.profileService.create();
   }
 
   @Get()

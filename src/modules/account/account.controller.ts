@@ -1,7 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Param, Delete } from '@nestjs/common';
 import { AccountService } from './account.service';
-import { CreateAccountDto } from './dto/create-account.dto';
-import { UpdateAccountDto } from './dto/update-account.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @Controller('account')
@@ -11,8 +9,8 @@ export class AccountController {
 
   @Post()
   @ApiOperation({ deprecated: true })
-  create(@Body() createAccountDto: CreateAccountDto) {
-    return this.accountService.create(createAccountDto);
+  create() {
+    return this.accountService.create();
   }
 
   @Get()
@@ -29,8 +27,8 @@ export class AccountController {
 
   @Patch(':id')
   @ApiOperation({ deprecated: true })
-  update(@Param('id') id: string, @Body() updateAccountDto: UpdateAccountDto) {
-    return this.accountService.update(+id, updateAccountDto);
+  update(@Param('id') id: string) {
+    return this.accountService.update(+id);
   }
 
   @Delete(':id')
