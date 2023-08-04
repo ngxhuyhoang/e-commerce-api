@@ -5,6 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from '@databases/type-orm-config.service';
 import { AccountModule } from './modules/account/account.module';
 import { ProfileModule } from './modules/profile/profile.module';
+import { RoleModule } from './modules/role/role.module';
+import { PermissionModule } from './modules/permission/permission.module';
 
 @Module({
   imports: [
@@ -17,6 +19,8 @@ import { ProfileModule } from './modules/profile/profile.module';
     }),
     AccountModule,
     ProfileModule,
+    RoleModule,
+    PermissionModule,
   ],
 })
 export class AppModule {}

@@ -7,6 +7,7 @@ import { RegisterRequestDto } from './dto/register-request.dto';
 import { Public } from '@decorators/public.decorator';
 import { AuthUser } from '@decorators/auth-user.decorator';
 import { LogoutRequestDto } from './dto/logout-request.dto';
+import { RolesGuard } from '@guards/role.guard';
 
 @Controller('auth')
 @ApiTags('Authentication/Authorization')
@@ -15,6 +16,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
+  @UseGuards(RolesGuard)
   async login(@Body() loginRequestDto: LoginRequestDto) {
     return await this.authService.login(loginRequestDto);
   }

@@ -1,9 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
+import { Repository } from 'typeorm';
+import { ProfileEntity } from './entities/profile.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class ProfileService {
+  constructor(
+    @InjectRepository(ProfileEntity)
+    private readonly _profileRepository: Repository<ProfileEntity>,
+  ) {}
+
   create(createProfileDto: CreateProfileDto) {
     return 'This action adds a new profile';
   }
@@ -16,8 +24,16 @@ export class ProfileService {
     return `This action returns a #${id} profile`;
   }
 
-  update(id: number, updateProfileDto: UpdateProfileDto) {
-    return `This action updates a #${id} profile`;
+  async update(id: number, updateProfileDto: UpdateProfileDto) {
+    try {
+      const existedProfile = await this._profileRepository.findOne({ where: { id } });
+      if (!existedProfile) {
+        throw new NotFoundException('Profile is not found');
+      }
+      const result = await this._profileRepository.update(id, updateProfileDto);
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 
   remove(id: number) {
