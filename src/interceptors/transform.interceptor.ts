@@ -20,6 +20,7 @@ export class TransformInterceptor<T> implements NestInterceptor<T, Response<T>> 
       context.getClass(),
     ]);
 
+    // next.handle() trả về một Observable từ kêt quả của controller
     return next.handle().pipe(
       map((data) => ({
         statusCode: context.switchToHttp().getResponse().statusCode,
