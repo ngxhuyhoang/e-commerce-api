@@ -9,8 +9,10 @@ jobs:
   check-lint:
     runs-on: self-hosted
     steps:
+      - name: Check lint
       - run: cd /root/project/e-commerce-api && git fetch origin -p && git merge origin/main && npx yarn install && npx yarn lint
   deploy:
     runs-on: self-hosted
     steps:
+      - name: Deploy
       - run: cd /root/project/e-commerce-api && git fetch origin -p && git merge origin/main && npx yarn install && npx yarn docker:deploy
