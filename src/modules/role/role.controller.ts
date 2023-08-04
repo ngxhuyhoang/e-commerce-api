@@ -1,23 +1,25 @@
 import { Controller, Get, Post, Patch, Param, Delete } from '@nestjs/common';
 import { RoleService } from './role.service';
 import { ApiTags } from '@nestjs/swagger';
+import { ResponseMessage } from '@decorators/response.decorator';
 
 @Controller('role')
 @ApiTags('Role')
 export class RoleController {
   constructor(private readonly roleService: RoleService) {}
 
-  @Post()
+  @Post('create')
   create() {
     return this.roleService.create();
   }
 
-  @Get()
+  @Get('get-all-role')
+  @ResponseMessage('Get all role success')
   findAll() {
     return this.roleService.findAll();
   }
 
-  @Get(':id')
+  @Get('get-single/:id')
   findOne(@Param('id') id: string) {
     return this.roleService.findOne(+id);
   }
