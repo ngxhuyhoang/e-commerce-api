@@ -1,5 +1,5 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from '@guards/jwt-auth.guard';
 import { LoginRequestDto } from './dto/login-request.dto';
@@ -35,28 +35,24 @@ export class AuthController {
   }
 
   @Post('forgot-password')
-  @ApiOperation({ deprecated: true })
   @ApiBearerAuth()
   async forgotPassword() {
     return await this.authService.forgotPassword();
   }
 
   @Post('reset-password')
-  @ApiOperation({ deprecated: true })
   @ApiBearerAuth()
   async resetPassword() {
     return await this.authService.resetPassword();
   }
 
   @Post('change-password')
-  @ApiOperation({ deprecated: true })
   @ApiBearerAuth()
   async changePassword() {
     return await this.authService.changePassword();
   }
 
   @Post('refresh-token')
-  @ApiOperation({ deprecated: true })
   @ApiBearerAuth()
   async refreshToken() {
     return await this.authService.refreshToken();
