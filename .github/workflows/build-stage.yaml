@@ -17,10 +17,6 @@ jobs:
           git merge origin/main 
           npx yarn install 
           npx yarn lint
-  deploy:
-    name: Deploy
-    runs-on: self-hosted
-    steps:
       - name: Deploy
         run: |
           cd /root/project/e-commerce-api 
@@ -28,3 +24,5 @@ jobs:
           git merge origin/main 
           npx yarn install 
           npx yarn docker:deploy
+
+
