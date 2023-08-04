@@ -18,10 +18,29 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
 
-  const config = new DocumentBuilder().setTitle('E Commerce API Docs').setVersion('1.0').addBearerAuth().build();
+  const config = new DocumentBuilder()
+    .setTitle('E Commerce API Docs')
+    .setDescription('Haha')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('docs', app, document);
+  SwaggerModule.setup('docs', app, document, {
+    explorer: true,
+    // swaggerOptions: {
+    //   urls: [
+    //     {
+    //       url: 'http://localhost:4200/swagger-ui.html',
+    //       name: 'v1',
+    //     },
+    //     {
+    //       url: 'http://localhost:4200/api/docs',
+    //       name: 'v2',
+    //     },
+    //   ],
+    // },
+  });
 
   const port = configService.get('PORT');
   const env = configService.get('NODE_ENV');
