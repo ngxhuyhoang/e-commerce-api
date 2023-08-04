@@ -6,7 +6,11 @@ on:
       - main
 
 jobs:
-  build:
+  check-lint:
+    runs-on: self-hosted
+    steps:
+      - run: cd /root/project/e-commerce-api && git fetch origin -p && git merge origin/main && npx yarn install && npx yarn lint
+  deploy:
     runs-on: self-hosted
     steps:
       - run: cd /root/project/e-commerce-api && git fetch origin -p && git merge origin/main && npx yarn install && npx yarn docker:deploy
