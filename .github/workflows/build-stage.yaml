@@ -10,6 +10,8 @@ jobs:
     name: Check lint
     runs-on: self-hosted
     steps:
+      - name: Clean Docker
+        run: docker system prune -a -f
       - name: Check lint
         run: | 
           cd /root/project/e-commerce-api
