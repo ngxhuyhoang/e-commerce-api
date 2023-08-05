@@ -5,7 +5,7 @@ import { JwtAuthGuard } from '@guards/jwt-auth.guard';
 import { LoginRequestDto } from './dto/login-request.dto';
 import { RegisterRequestDto } from './dto/register-request.dto';
 import { Public } from '@decorators/public.decorator';
-import { AuthUser } from '@decorators/auth-user.decorator';
+import { AuthUser, AuthUserDto } from '@decorators/auth-user.decorator';
 import { LogoutRequestDto } from './dto/logout-request.dto';
 import { ResponseMessage } from '@decorators/response.decorator';
 import { RefreshTokenRequestDto } from './dto/refresh-token-request.dto';
@@ -37,8 +37,8 @@ export class AuthController {
   @Post('logout')
   @ApiBearerAuth()
   @ApiOperation({ deprecated: false })
-  async logout(@AuthUser() user: any, @Body() logoutRequestDto: LogoutRequestDto) {
-    return await this.authService.logout(user, logoutRequestDto);
+  async logout(@AuthUser() user: AuthUserDto, @Body() logoutRequestDto: LogoutRequestDto) {
+    return await this.authService.logout(user.accountId, logoutRequestDto);
   }
 
   @Post('reset-password')
@@ -51,7 +51,7 @@ export class AuthController {
   @Post('change-password')
   @ApiBearerAuth()
   @ApiOperation({ deprecated: false })
-  async changePassword(@Body() body: ChangePasswordDto, @AuthUser() user: any) {
+  async changePassword(@Body() body: ChangePasswordDto, @AuthUser() user: AuthUserDto) {
     return await this.authService.changePassword(body, user);
   }
 

@@ -1,9 +1,12 @@
-import { Controller, Get, Post, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { AccountService } from './account.service';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from '@guards/jwt-auth.guard';
 
 @Controller('account')
 @ApiTags('Tài khoản')
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
 export class AccountController {
   constructor(private readonly accountService: AccountService) {}
 

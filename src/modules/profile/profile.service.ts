@@ -3,6 +3,7 @@ import { UpdateProfileDto } from './dto/update-profile.dto';
 import { Repository } from 'typeorm';
 import { ProfileEntity } from './entities/profile.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { AuthUserDto } from '@decorators/auth-user.decorator';
 
 @Injectable()
 export class ProfileService {
@@ -10,14 +11,6 @@ export class ProfileService {
     @InjectRepository(ProfileEntity)
     private readonly _profileRepository: Repository<ProfileEntity>,
   ) {}
-
-  create() {
-    return 'This action adds a new profile';
-  }
-
-  findAll() {
-    return `This action returns all profile`;
-  }
 
   findOne(id: number) {
     return `This action returns a #${id} profile`;
@@ -29,14 +22,23 @@ export class ProfileService {
       if (!existedProfile) {
         throw new NotFoundException('Profile is not found');
       }
-      const result = await this._profileRepository.update(id, updateProfileDto);
-      console.log(result);
+      await this._profileRepository.update(id, updateProfileDto);
+      return updateProfileDto;
     } catch (error) {
       throw new BadRequestException(error.message);
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} profile`;
+  async getCurrentUser(user: AuthUserDto) {
+    try {
+      const existedProfile = await this._profileRepository.findOne({ where: { id: user.userId } });
+      if (!existedProfile) {
+        throw new NotFoundException('Profile is not found');
+      }
+      console.log(existedProfile);
+      return existedProfile;
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 }

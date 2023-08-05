@@ -9,6 +9,8 @@ import { RoleModule } from './modules/role/role.module';
 import { PermissionModule } from './modules/permission/permission.module';
 import { ProductModule } from './modules/product/product.module';
 import { CartModule } from './modules/cart/cart.module';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { MailerModule } from './modules/mailer/mailer.module';
 
 @Module({
   imports: [
@@ -19,12 +21,17 @@ import { CartModule } from './modules/cart/cart.module';
       inject: [ConfigService],
       useClass: TypeOrmConfigService,
     }),
+    ThrottlerModule.forRoot({
+      ttl: 60,
+      limit: 10,
+    }),
     AccountModule,
     ProfileModule,
     RoleModule,
     PermissionModule,
     ProductModule,
     CartModule,
+    MailerModule,
   ],
 })
 export class AppModule {}

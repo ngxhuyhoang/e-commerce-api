@@ -5,14 +5,16 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
 import helmet from 'helmet';
 import { TransformInterceptor } from '@interceptors/transform.interceptor';
+import * as compression from 'compression';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const reflector = app.get(Reflector);
 
-  app.use(helmet());
   app.enableCors();
+  app.use(helmet());
+  app.use(compression());
   app.useGlobalPipes(
     new ValidationPipe({
       exceptionFactory: (errors) => {
@@ -23,10 +25,7 @@ async function bootstrap() {
     }),
   );
   app.useGlobalInterceptors(new TransformInterceptor(reflector));
-  app.enableVersioning({
-    type: VersioningType.URI,
-    defaultVersion: '1.0',
-  });
+  app.enableVersioning({ type: VersioningType.URI, defaultVersion: '1.0' });
 
   const configService = app.get(ConfigService);
 
