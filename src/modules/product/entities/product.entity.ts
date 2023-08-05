@@ -8,7 +8,7 @@ export class ProductEntity extends BasedEntity {
   name: string;
 
   @Column()
-  price: string;
+  price: number;
 
   @Column()
   description: string;

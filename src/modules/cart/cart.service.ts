@@ -26,21 +26,10 @@ export class CartService {
       if (!account) {
         throw new NotFoundException('Tài khoản không tồn tại');
       }
-      const cart = await this._cartRepository.findOne({ where: { cartOwner: account } });
-      const product = await this._productRepository.findOne({ where: { id: updateCartDto.productId } });
-      if (!product) {
+      const product = await this._productRepository.find({ where: { id: updateCartDto.productId } });
+      if (!product.length) {
         throw new NotFoundException('Sản phẩm không tồn tại');
       }
-      if (!cart) {
-        const newCart = this._cartRepository.create({
-          cartOwner: account,
-          quantity: updateCartDto.quantity,
-          products: [product],
-        });
-        await this._cartRepository.save(newCart);
-        return newCart;
-      }
-      await this._cartRepository.save(cart);
       return 'Thành công';
     } catch (error) {
       throw new BadRequestException(error.message);

@@ -1,6 +1,7 @@
+import { BasedDto } from '@common/based.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateProductDto {
+export class ProductDto extends BasedDto {
   @ApiProperty()
   name: string;
 

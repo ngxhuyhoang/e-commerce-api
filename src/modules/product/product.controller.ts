@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ParseIntPipe } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@guards/jwt-auth.guard';
+import { ResponseMessage } from '@decorators/response.decorator';
+import { ProductDto } from './dto/product.dto';
 
 @Controller('product')
 @ApiTags('Sản phẩm')
@@ -13,9 +15,11 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Post()
-  @ApiOperation({ deprecated: true })
-  create(@Body() createProductDto: CreateProductDto) {
-    return this.productService.create(createProductDto);
+  @ApiOperation({ deprecated: false })
+  @ResponseMessage('Tạo sản phẩm thành công')
+  @ApiOkResponse({ description: 'Tạo sản phẩm thành công', type: CreateProductDto })
+  async create(@Body() createProductDto: CreateProductDto) {
+    return await this.productService.create(createProductDto);
   }
 
   @Get()
@@ -24,16 +28,18 @@ export class ProductController {
     return this.productService.findAll();
   }
 
-  @Get(':id')
-  @ApiOperation({ deprecated: true })
-  findOne(@Param('id') id: string) {
-    return this.productService.findOne(+id);
+  @Get(':id/get-one')
+  @ApiOperation({ deprecated: false })
+  @ApiOkResponse({ type: ProductDto })
+  findOne(@Param('id', new ParseIntPipe()) id: number) {
+    return this.productService.findOne(id);
   }
 
-  @Patch(':id')
-  @ApiOperation({ deprecated: true })
-  update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productService.update(+id, updateProductDto);
+  @Patch(':id/update')
+  @ApiOperation({ deprecated: false })
+  @ApiOkResponse({ type: ProductDto })
+  async update(@Param('id', new ParseIntPipe()) id: number, @Body() updateProductDto: UpdateProductDto) {
+    return await this.productService.update(id, updateProductDto);
   }
 
   @Delete(':id')
