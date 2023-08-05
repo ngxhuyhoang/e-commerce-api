@@ -10,6 +10,8 @@ import { ConfigService } from '@nestjs/config';
 import { RegisterRequestDto } from './dto/register-request.dto';
 import { LogoutRequestDto } from './dto/logout-request.dto';
 import { RefreshTokenRequestDto } from './dto/refresh-token-request.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -42,7 +44,6 @@ export class AuthService {
       if (!isMatchPassword) {
         throw new BadRequestException('Password is not correct');
       }
-      console.log(existedAccount);
       const accessToken: string = await this._jwtService.sign({
         accountId: existedAccount.id,
         userId: existedAccount.profile.id,
@@ -119,13 +120,37 @@ export class AuthService {
     }
   }
 
-  forgotPassword() {
-    return 'forgot password';
+  async resetPassword(body: ResetPasswordDto) {
+    try {
+      // Gửi mail link để người dùng reset password
+      console.log(body);
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 
-  resetPassword() {}
-
-  changePassword() {}
+  async changePassword(body: ChangePasswordDto, user) {
+    try {
+      if (body.newPassword !== body.confirmPassword) {
+        throw new BadRequestException('Password and confirm password is not match');
+      }
+      const existedAccount = await this._accountRepository.findOne({
+        where: { id: user.accountId },
+      });
+      if (!existedAccount) {
+        throw new NotFoundException('User is not registered');
+      }
+      const isMatchPassword = await bcrypt.compare(body.oldPassword, existedAccount.password);
+      if (!isMatchPassword) {
+        throw new BadRequestException('Password is not correct');
+      }
+      const salt = await bcrypt.genSalt();
+      const hashPassword = await bcrypt.hash(body.newPassword, salt);
+      await this._accountRepository.update(existedAccount.id, { password: hashPassword });
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
 
   async refreshToken(body: RefreshTokenRequestDto) {
     try {

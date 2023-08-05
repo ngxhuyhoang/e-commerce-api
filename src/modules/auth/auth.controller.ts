@@ -9,6 +9,8 @@ import { AuthUser } from '@decorators/auth-user.decorator';
 import { LogoutRequestDto } from './dto/logout-request.dto';
 import { ResponseMessage } from '@decorators/response.decorator';
 import { RefreshTokenRequestDto } from './dto/refresh-token-request.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Controller('auth')
 @ApiTags('Xác thực người dùng')
@@ -39,25 +41,18 @@ export class AuthController {
     return await this.authService.logout(user, logoutRequestDto);
   }
 
-  @Post('forgot-password')
-  @ApiBearerAuth()
-  @ApiOperation({ deprecated: true })
-  async forgotPassword() {
-    return await this.authService.forgotPassword();
-  }
-
   @Post('reset-password')
   @ApiBearerAuth()
   @ApiOperation({ deprecated: true })
-  async resetPassword() {
-    return await this.authService.resetPassword();
+  async resetPassword(@Body() body: ResetPasswordDto) {
+    return await this.authService.resetPassword(body);
   }
 
   @Post('change-password')
   @ApiBearerAuth()
-  @ApiOperation({ deprecated: true })
-  async changePassword() {
-    return await this.authService.changePassword();
+  @ApiOperation({ deprecated: false })
+  async changePassword(@Body() body: ChangePasswordDto, @AuthUser() user: any) {
+    return await this.authService.changePassword(body, user);
   }
 
   @Post('refresh-token')
