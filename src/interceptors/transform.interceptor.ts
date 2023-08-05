@@ -14,7 +14,7 @@ export interface Response<T> {
 export class TransformInterceptor<T> implements NestInterceptor<T, Response<T>> {
   constructor(private readonly reflector: Reflector) {}
 
-  intercept(context: ExecutionContext, next: CallHandler<T>): Observable<any> | Promise<Observable<any>> {
+  intercept(context: ExecutionContext, next: CallHandler<T>): Observable<any> {
     const responseMessage = this.reflector.getAllAndOverride<boolean>(MetadataKey.RESPONSE_MESSAGE, [
       context.getHandler(),
       context.getClass(),
@@ -25,6 +25,7 @@ export class TransformInterceptor<T> implements NestInterceptor<T, Response<T>> 
       map((data) => ({
         statusCode: context.switchToHttp().getResponse().statusCode,
         message: responseMessage || 'Success',
+        isSuccess: true,
         data: data,
       })),
     );

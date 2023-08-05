@@ -7,7 +7,8 @@ import { RegisterRequestDto } from './dto/register-request.dto';
 import { Public } from '@decorators/public.decorator';
 import { AuthUser } from '@decorators/auth-user.decorator';
 import { LogoutRequestDto } from './dto/logout-request.dto';
-import { RolesGuard } from '@guards/role.guard';
+import { ResponseMessage } from '@decorators/response.decorator';
+import { RefreshTokenRequestDto } from './dto/refresh-token-request.dto';
 
 @Controller('auth')
 @ApiTags('Xác thực người dùng')
@@ -16,8 +17,9 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
-  @UseGuards(RolesGuard)
-  @ApiOperation({ deprecated: true })
+  @ApiOperation({ deprecated: false })
+  @ResponseMessage('Đăng nhập thành công')
+  @Public()
   async login(@Body() loginRequestDto: LoginRequestDto) {
     return await this.authService.login(loginRequestDto);
   }
@@ -25,14 +27,14 @@ export class AuthController {
   @Post('register')
   @Public()
   @ApiBody({ type: RegisterRequestDto })
-  @ApiOperation({ deprecated: true })
+  @ApiOperation({ summary: 'Người dùng cuối đăng ký tài khoản', deprecated: false })
   async register(@Body() registerRequestDto: RegisterRequestDto) {
     return await this.authService.register(registerRequestDto);
   }
 
   @Post('logout')
   @ApiBearerAuth()
-  @ApiOperation({ deprecated: true })
+  @ApiOperation({ deprecated: false })
   async logout(@AuthUser() user: any, @Body() logoutRequestDto: LogoutRequestDto) {
     return await this.authService.logout(user, logoutRequestDto);
   }
@@ -60,8 +62,8 @@ export class AuthController {
 
   @Post('refresh-token')
   @ApiBearerAuth()
-  @ApiOperation({ deprecated: true })
-  async refreshToken() {
-    return await this.authService.refreshToken();
+  @ApiOperation({ deprecated: false })
+  async refreshToken(@Body() body: RefreshTokenRequestDto) {
+    return await this.authService.refreshToken(body);
   }
 }

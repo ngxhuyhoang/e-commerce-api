@@ -1,6 +1,6 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe, VersioningType } from '@nestjs/common';
+import { BadRequestException, ValidationPipe, VersioningType } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
 import helmet from 'helmet';
@@ -13,7 +13,15 @@ async function bootstrap() {
 
   app.use(helmet());
   app.enableCors();
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      exceptionFactory: (errors) => {
+        const result = errors.map((error) => error.constraints[Object.keys(error.constraints)[0]]);
+        const messageJoined = result.join(', ');
+        return new BadRequestException(messageJoined);
+      },
+    }),
+  );
   app.useGlobalInterceptors(new TransformInterceptor(reflector));
   app.enableVersioning({
     type: VersioningType.URI,

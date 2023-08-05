@@ -9,6 +9,7 @@ import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
 import { RegisterRequestDto } from './dto/register-request.dto';
 import { LogoutRequestDto } from './dto/logout-request.dto';
+import { RefreshTokenRequestDto } from './dto/refresh-token-request.dto';
 
 @Injectable()
 export class AuthService {
@@ -23,6 +24,10 @@ export class AuthService {
 
     private readonly _configService: ConfigService,
   ) {}
+
+  async loginTest() {
+    return 'Haha';
+  }
 
   async login(loginRequestDto: LoginRequestDto) {
     try {
@@ -118,5 +123,36 @@ export class AuthService {
 
   changePassword() {}
 
-  refreshToken() {}
+  async refreshToken(body: RefreshTokenRequestDto) {
+    try {
+      const isValidRefreshToken = await this._jwtService.verifyAsync(body.refreshToken);
+      if (!isValidRefreshToken) {
+        throw new BadRequestException('Refresh token is not valid');
+      }
+      const existedAccount = await this._accountRepository.findOne({ where: { refreshToken: body.refreshToken } });
+      if (!existedAccount) {
+        throw new NotFoundException('User not found');
+      }
+
+      const refreshToken = await this._jwtService.sign(
+        {
+          email: isValidRefreshToken.email,
+        },
+        {
+          secret: this._configService.get<string>('JWT_REFRESH_TOKEN_SECRET'),
+          expiresIn: this._configService.get<string>('JWT_REFRESH_TOKEN_EXPIRES_IN'),
+        },
+      );
+
+      await this._accountRepository.update(existedAccount.id, { refreshToken });
+
+      const accessToken: string = await this._jwtService.sign({
+        email: isValidRefreshToken.email,
+        accountId: existedAccount.id,
+      });
+      return { accessToken, refreshToken };
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
 }
