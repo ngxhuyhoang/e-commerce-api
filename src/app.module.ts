@@ -7,6 +7,8 @@ import { AccountModule } from './modules/account/account.module';
 import { ProfileModule } from './modules/profile/profile.module';
 import { RoleModule } from './modules/role/role.module';
 import { PermissionModule } from './modules/permission/permission.module';
+import { ProductModule } from './modules/product/product.module';
+import { CartModule } from './modules/cart/cart.module';
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { PermissionModule } from './modules/permission/permission.module';
     ProfileModule,
     RoleModule,
     PermissionModule,
+    ProductModule,
+    CartModule,
   ],
 })
 export class AppModule {}

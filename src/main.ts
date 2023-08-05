@@ -23,8 +23,8 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   const config = new DocumentBuilder()
-    .setTitle('E Commerce API Docs')
-    .setDescription('Haha')
+    .setTitle('Web API Thương Mại Điện Tử Docs')
+    .setDescription('Project về thương mại điện tử')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
