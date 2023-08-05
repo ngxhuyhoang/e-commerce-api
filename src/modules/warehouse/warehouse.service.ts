@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { CreateWarehouseDto } from './dto/create-warehouse.dto';
-import { UpdateWarehouseDto } from './dto/update-warehouse.dto';
 
 @Injectable()
 export class WarehouseService {
-  create(createWarehouseDto: CreateWarehouseDto) {
+  create() {
     return 'This action adds a new warehouse';
   }
 
@@ -16,7 +14,7 @@ export class WarehouseService {
     return `This action returns a #${id} warehouse`;
   }
 
-  update(id: number, updateWarehouseDto: UpdateWarehouseDto) {
+  update(id: number) {
     return `This action updates a #${id} warehouse`;
   }
 
