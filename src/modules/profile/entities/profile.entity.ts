@@ -13,6 +13,7 @@ export class ProfileEntity extends BasedEntity {
   lastName: string;
 
   @Column({ nullable: true })
+  @Index()
   avatarUrl: string;
 
   @Column({ nullable: true })

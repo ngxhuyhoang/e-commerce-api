@@ -31,7 +31,10 @@ export class AuthService {
 
   async login(loginRequestDto: LoginRequestDto) {
     try {
-      const existedAccount = await this._accountRepository.findOne({ where: { email: loginRequestDto.email } });
+      const existedAccount = await this._accountRepository.findOne({
+        where: { email: loginRequestDto.email },
+        relations: ['profile'],
+      });
       if (!existedAccount) {
         throw new NotFoundException('User is not registered');
       }
@@ -39,6 +42,7 @@ export class AuthService {
       if (!isMatchPassword) {
         throw new BadRequestException('Password is not correct');
       }
+      console.log(existedAccount);
       const accessToken: string = await this._jwtService.sign({
         accountId: existedAccount.id,
         userId: existedAccount.profile.id,
@@ -125,7 +129,9 @@ export class AuthService {
 
   async refreshToken(body: RefreshTokenRequestDto) {
     try {
-      const isValidRefreshToken = await this._jwtService.verifyAsync(body.refreshToken);
+      const isValidRefreshToken = await this._jwtService.verifyAsync(body.refreshToken, {
+        secret: this._configService.get<string>('JWT_REFRESH_TOKEN_SECRET'),
+      });
       if (!isValidRefreshToken) {
         throw new BadRequestException('Refresh token is not valid');
       }

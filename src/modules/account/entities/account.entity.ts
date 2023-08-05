@@ -1,7 +1,7 @@
 import { BasedEntity } from '@common/based.entity';
 import { ProfileEntity } from '@modules/profile/entities/profile.entity';
 import { RoleEntity } from '@modules/role/entities/role.entity';
-import { Column, Entity, Index, OneToMany } from 'typeorm';
+import { Column, Entity, Index, OneToMany, OneToOne } from 'typeorm';
 
 @Entity({ name: 'account' })
 export class AccountEntity extends BasedEntity {
@@ -16,6 +16,7 @@ export class AccountEntity extends BasedEntity {
   @Index()
   refreshToken: string;
 
+  @OneToOne(() => ProfileEntity, (profile) => profile.account)
   profile: ProfileEntity;
 
   @OneToMany(() => RoleEntity, (role) => role.account)
