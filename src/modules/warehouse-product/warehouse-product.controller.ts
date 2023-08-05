@@ -13,8 +13,8 @@ export class WarehouseProductController {
   constructor(private readonly warehouseProductService: WarehouseProductService) {}
 
   @Post()
-  create(@Body() createWarehouseProductDto: CreateWarehouseProductDto) {
-    return this.warehouseProductService.create(createWarehouseProductDto);
+  create() {
+    return this.warehouseProductService.create();
   }
 
   @Get()
@@ -28,8 +28,8 @@ export class WarehouseProductController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateWarehouseProductDto: UpdateWarehouseProductDto) {
-    return this.warehouseProductService.update(+id, updateWarehouseProductDto);
+  update(@Param('id') id: string) {
+    return this.warehouseProductService.update(+id);
   }
 
   @Delete(':id')
