@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Param, Delete, UseGuards } from '@nestjs/common';
 import { AccountService } from './account.service';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@guards/jwt-auth.guard';
@@ -11,33 +11,32 @@ export class AccountController {
   constructor(private readonly accountService: AccountService) {}
 
   @Post('user')
-  @ApiOperation({ deprecated: true })
-  @ApiOperation({ summary: 'Tạo tài khoản' })
+  @ApiOperation({ summary: 'Tạo tài khoản cho cấp dưới', deprecated: true })
   create() {
     return this.accountService.create();
   }
 
-  @Get()
-  @ApiOperation({ deprecated: true })
+  @Get('list')
+  @ApiOperation({ summary: 'Danh sách tài khoản cấp dưới', deprecated: true })
   findAll() {
     return this.accountService.findAll();
   }
 
   @Get(':id')
-  @ApiOperation({ deprecated: true })
+  @ApiOperation({ summary: 'Lấy một tài khoản cấp dưới', deprecated: true })
   findOne(@Param('id') id: string) {
     return this.accountService.findOne(+id);
   }
 
-  @Patch(':id')
-  @ApiOperation({ deprecated: true })
-  update(@Param('id') id: string) {
-    return this.accountService.update(+id);
+  @Delete(':id/delete')
+  @ApiOperation({ summary: 'Xóa tài khoản cấp dưới', deprecated: true })
+  remove(@Param('id') id: string) {
+    return this.accountService.remove(+id);
   }
 
-  @Delete(':id')
-  @ApiOperation({ deprecated: true })
-  remove(@Param('id') id: string) {
+  @Post(':id/lock')
+  @ApiOperation({ summary: 'Khóa tài khoản cấp dưới', deprecated: true })
+  lock(@Param('id') id: string) {
     return this.accountService.remove(+id);
   }
 }

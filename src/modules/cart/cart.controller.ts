@@ -1,7 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, UseGuards } from '@nestjs/common';
 import { CartService } from './cart.service';
 import { CreateCartDto } from './dto/create-cart.dto';
-import { UpdateCartDto } from './dto/update-cart.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@guards/jwt-auth.guard';
 
@@ -12,32 +11,20 @@ import { JwtAuthGuard } from '@guards/jwt-auth.guard';
 export class CartController {
   constructor(private readonly cartService: CartService) {}
 
-  @Post()
-  @ApiOperation({ deprecated: true })
+  @Post('update')
+  @ApiOperation({ summary: 'Cập nhật giỏ hàng', deprecated: false })
   create(@Body() createCartDto: CreateCartDto) {
     return this.cartService.create(createCartDto);
   }
 
-  @Get()
-  @ApiOperation({ deprecated: true })
+  @Get('list')
+  @ApiOperation({ summary: 'Lấy danh sách sản phẩm trong giỏ hàng', deprecated: false })
   findAll() {
     return this.cartService.findAll();
   }
 
-  @Get(':id')
-  @ApiOperation({ deprecated: true })
-  findOne(@Param('id') id: string) {
-    return this.cartService.findOne(+id);
-  }
-
-  @Patch(':id')
-  @ApiOperation({ deprecated: true })
-  update(@Param('id') id: string, @Body() updateCartDto: UpdateCartDto) {
-    return this.cartService.update(+id, updateCartDto);
-  }
-
   @Delete(':id')
-  @ApiOperation({ deprecated: true })
+  @ApiOperation({ summary: 'Xóa sản phẩm trong giỏ hàng', deprecated: false })
   remove(@Param('id') id: string) {
     return this.cartService.remove(+id);
   }

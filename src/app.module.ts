@@ -11,6 +11,8 @@ import { ProductModule } from './modules/product/product.module';
 import { CartModule } from './modules/cart/cart.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { MailerModule } from './modules/mailer/mailer.module';
+import { WarehouseModule } from './modules/warehouse/warehouse.module';
+import { WarehouseProductModule } from './modules/warehouse-product/warehouse-product.module';
 
 @Module({
   imports: [
@@ -32,6 +34,8 @@ import { MailerModule } from './modules/mailer/mailer.module';
     ProductModule,
     CartModule,
     MailerModule,
+    WarehouseModule,
+    WarehouseProductModule,
   ],
 })
 export class AppModule {}
