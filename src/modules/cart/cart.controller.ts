@@ -1,8 +1,9 @@
 import { Controller, Get, Post, Body, Param, Delete, UseGuards } from '@nestjs/common';
 import { CartService } from './cart.service';
-import { CreateCartDto } from './dto/create-cart.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@guards/jwt-auth.guard';
+import { UpdateCartDto } from './dto/update-cart.dto';
+import { AuthUser, AuthUserDto } from '@decorators/auth-user.decorator';
 
 @Controller('cart')
 @ApiTags('Giỏ hàng')
@@ -13,8 +14,8 @@ export class CartController {
 
   @Post('update')
   @ApiOperation({ summary: 'Cập nhật giỏ hàng', deprecated: false })
-  create(@Body() createCartDto: CreateCartDto) {
-    return this.cartService.create(createCartDto);
+  updateCart(@Body() updateCartDto: UpdateCartDto, @AuthUser() user: AuthUserDto) {
+    return this.cartService.updateCart(updateCartDto, user);
   }
 
   @Get('list')

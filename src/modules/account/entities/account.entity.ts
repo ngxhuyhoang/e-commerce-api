@@ -1,4 +1,5 @@
 import { BasedEntity } from '@common/based.entity';
+import { CartEntity } from '@modules/cart/entities/cart.entity';
 import { ProfileEntity } from '@modules/profile/entities/profile.entity';
 import { RoleEntity } from '@modules/role/entities/role.entity';
 import { Column, Entity, Index, OneToMany, OneToOne } from 'typeorm';
@@ -21,4 +22,7 @@ export class AccountEntity extends BasedEntity {
 
   @OneToMany(() => RoleEntity, (role) => role.account)
   roles: RoleEntity[];
+
+  @OneToOne(() => CartEntity, (cart) => cart.cartOwner)
+  cart: CartEntity;
 }

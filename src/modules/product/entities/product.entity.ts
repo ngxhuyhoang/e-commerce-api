@@ -1,5 +1,6 @@
 import { BasedEntity } from '@common/based.entity';
-import { Column, Entity } from 'typeorm';
+import { CartEntity } from '@modules/cart/entities/cart.entity';
+import { Column, Entity, ManyToOne } from 'typeorm';
 
 @Entity({ name: 'products' })
 export class ProductEntity extends BasedEntity {
@@ -11,4 +12,7 @@ export class ProductEntity extends BasedEntity {
 
   @Column()
   description: string;
+
+  @ManyToOne(() => CartEntity, (cart) => cart.products)
+  cart: CartEntity;
 }
