@@ -48,6 +48,8 @@ export class AuthService {
         accountId: existedAccount.id,
         userId: existedAccount.profile.id,
         email: loginRequestDto.email,
+        roles: [],
+        permissions: [],
       });
       const refreshToken = await this._jwtService.sign(
         {
@@ -88,12 +90,17 @@ export class AuthService {
         },
       );
 
-      const createdAccount = await this._profileRepository.save(
+      const createdAccount = await this._accountRepository.save(
         this._profileRepository.create({
           account: this._accountRepository.create({
             email: registerRequestDto.email,
             password: hashPassword,
             refreshToken: refreshToken,
+            profile: this._profileRepository.create({
+              firstName: registerRequestDto.firstName,
+              lastName: registerRequestDto.lastName,
+              dateOfBirth: registerRequestDto.dateOfBirth,
+            }),
           }),
         }),
       );
@@ -101,6 +108,9 @@ export class AuthService {
       const accessToken: string = await this._jwtService.sign({
         email: registerRequestDto.email,
         accountId: createdAccount.id,
+        userId: createdAccount.profile.id,
+        roles: [],
+        permissions: [],
       });
       return { accessToken, refreshToken: refreshToken };
     } catch (error) {
