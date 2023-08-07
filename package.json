@@ -32,7 +32,8 @@
     "docker:shutdown": "yarn build && docker compose -f docker-compose-staging.yaml down",
     "docker:logs": "docker compose -f docker-compose-staging.yaml logs",
     "clean": "rm -rf node_modules yarn.lock && yarn install",
-    "docs:generate": "npx @compodoc/compodoc -p tsconfig.json -s"
+    "docs:generate": "npx @compodoc/compodoc -p tsconfig.json -s",
+    "sync:database": "cd scripts && ./sync-database.sh"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.9.1",
