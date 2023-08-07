@@ -6,6 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import helmet from 'helmet';
 import { TransformInterceptor } from '@interceptors/transform.interceptor';
 import * as compression from 'compression';
+import { JwtAuthGuard } from '@guards/jwt-auth.guard';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -24,6 +25,7 @@ async function bootstrap() {
       },
     }),
   );
+  app.useGlobalGuards(new JwtAuthGuard(reflector));
   app.useGlobalInterceptors(new TransformInterceptor(reflector));
   app.enableVersioning({ type: VersioningType.URI, defaultVersion: '1.0' });
 
