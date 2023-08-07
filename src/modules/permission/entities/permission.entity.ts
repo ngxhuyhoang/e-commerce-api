@@ -1,8 +1,9 @@
 import { BasedEntity } from '@common/based.entity';
-import { Column, Entity, Index } from 'typeorm';
+import { RoleEntity } from '@modules/role/entities/role.entity';
+import { Column, Entity, Index, JoinTable, ManyToMany } from 'typeorm';
 
 @Entity({ name: 'permissions' })
-export class Permission extends BasedEntity {
+export class PermissionEntity extends BasedEntity {
   @Column()
   @Index()
   name: string;
@@ -10,4 +11,11 @@ export class Permission extends BasedEntity {
   @Column()
   @Index()
   description: string;
+
+  @ManyToMany(() => RoleEntity, (role) => role.permissions)
+  @JoinTable({ name: 'roles_and_permissions' })
+  roles: RoleEntity[];
+
+  @Column()
+  apiMethod: string;
 }
