@@ -1,4 +1,5 @@
 import { MetadataKey } from '@constants/enum';
+import { AuthUserDto } from '@decorators/auth-user.decorator';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 
@@ -12,6 +13,14 @@ export class RolesGuard implements CanActivate {
       context.getClass(),
     ]);
     console.log(roles);
+    const request = context.switchToHttp().getRequest();
+    const authUser: AuthUserDto = request.user;
+    console.log('request', request);
+    console.log('authUser', authUser);
+    const targetMethod = request.method;
+    const targetUrl = request.url;
+    console.log('targetMethod', targetMethod);
+    console.log('targetUrl', targetUrl);
     return true;
   }
 }

@@ -8,14 +8,14 @@ import { JwtAuthGuard } from '@guards/jwt-auth.guard';
 @Controller('permission')
 @ApiTags('Quyền')
 @UseGuards(JwtAuthGuard)
+@UseGuards(RolesGuard)
 @ApiBearerAuth()
 export class PermissionController {
   constructor(private readonly permissionService: PermissionService) {}
 
   @Post()
   @Roles('Hahah')
-  @UseGuards(RolesGuard)
-  @ApiOperation({ deprecated: true })
+  @ApiOperation({ deprecated: false })
   create() {
     return this.permissionService.create();
   }
