@@ -17,8 +17,8 @@ export class RolesGuard implements CanActivate {
     const authUser: AuthUserDto = request.user;
     console.log('request', request);
     console.log('authUser', authUser);
-    const targetMethod = request.method;
-    const targetUrl = request.url;
+    const targetMethod: string = request.method;
+    const targetUrl: string = request.url;
     console.log('targetMethod', targetMethod);
     console.log('targetUrl', targetUrl);
     return true;

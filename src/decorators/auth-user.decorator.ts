@@ -1,3 +1,5 @@
+import { PermissionDto } from '@modules/permission/dto/permission.dto';
+import { RoleDto } from '@modules/role/dto/role.dto';
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 
 export class AuthUserDto {
@@ -5,8 +7,8 @@ export class AuthUserDto {
   accountId: number;
   username: string;
   email: string;
-  role: string;
-  permissions: string[];
+  roles: RoleDto[];
+  permissions: PermissionDto[];
 }
 
 export const AuthUser = createParamDecorator((_data, ctx: ExecutionContext) => {
