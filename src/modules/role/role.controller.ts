@@ -4,6 +4,7 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ResponseMessage } from '@decorators/response.decorator';
 import { JwtAuthGuard } from '@guards/jwt-auth.guard';
 import { CreateRoleDto } from './dto/create-role.dto';
+import { AssignRoleToAccountDto } from './dto/assign-role-to-account-request.dto';
 
 @Controller('role')
 @ApiTags('Vai trò')
@@ -13,7 +14,7 @@ export class RoleController {
   constructor(private readonly roleService: RoleService) {}
 
   @Post('create')
-  @ApiOperation({ deprecated: true })
+  @ApiOperation({ deprecated: false })
   create(@Body() createRoleDto: CreateRoleDto) {
     return this.roleService.create(createRoleDto);
   }
@@ -41,5 +42,11 @@ export class RoleController {
   @ApiOperation({ deprecated: true })
   remove(@Param('id') id: string) {
     return this.roleService.remove(+id);
+  }
+
+  @Post('assign-role-to-account')
+  @ApiOperation({ deprecated: false })
+  async assignRoleToAccount(@Body() body: AssignRoleToAccountDto) {
+    return await this.roleService.assignRoleToAccount(body);
   }
 }
