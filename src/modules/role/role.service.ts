@@ -49,13 +49,18 @@ export class RoleService {
     }
   }
 
-  update(id: number) {
-    return `This action updates a #${id} role`;
-  }
-
-  async remove(id: number, body: UpdateRoleDto) {
+  async update(id: number, body: UpdateRoleDto) {
     try {
       await this._roleRepository.save({ id, ...body });
+      return 'Thành công';
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  async remove(id: number) {
+    try {
+      await this._roleRepository.softDelete(id);
       return 'Thành công';
     } catch (error) {
       throw new BadRequestException(error.message);

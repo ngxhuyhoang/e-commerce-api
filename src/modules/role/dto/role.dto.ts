@@ -14,6 +14,7 @@ export class RoleDto extends BasedDto {
     super(entity);
 
     this.name = entity.name;
+    if (!entity.permissions) return;
     this.permissions = entity.permissions.map((permission) => new PermissionDto(permission));
   }
 }

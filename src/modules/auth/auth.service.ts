@@ -45,16 +45,27 @@ export class AuthService {
     try {
       const existedAccount = await this._accountRepository.findOne({
         where: { email: loginRequestDto.email },
-        relations: ['profile'],
+        relations: {
+          profile: true,
+          roles: true,
+        },
       });
       if (!existedAccount) {
         throw new NotFoundException('User is not registered');
       }
+      console.log('existedAccount', existedAccount);
       const isMatchPassword = await bcrypt.compare(loginRequestDto.password, existedAccount.password);
       if (!isMatchPassword) {
         throw new BadRequestException('Password is not correct');
       }
-      const roles = await this._roleRepository.find({ where: { account: existedAccount } });
+      const roles = await this._roleRepository.find({
+        where: {
+          account: { id: existedAccount.id },
+        },
+        relations: {
+          account: true,
+        },
+      });
       const permissions = await this._permissionRepository.find({ where: { roles } });
       const accessToken: string = await this._jwtService.sign({
         accountId: existedAccount.id,
@@ -76,6 +87,7 @@ export class AuthService {
       await this._accountRepository.update(existedAccount.id, { refreshToken });
       return { accessToken, refreshToken: refreshToken };
     } catch (error) {
+      console.log(error);
       throw new BadRequestException(error.message);
     }
   }
