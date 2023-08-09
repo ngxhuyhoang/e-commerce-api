@@ -1,5 +1,6 @@
 export class BaseMeta {
   page: number;
+  totalRecord: number;
 }
 
 export class BaseResponse<T> {

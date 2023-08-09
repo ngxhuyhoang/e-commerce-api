@@ -3,6 +3,7 @@ import { Repository } from 'typeorm';
 import { RoleEntity } from './entities/role.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseResponse } from '@common/base-response.dto';
+import { CreateRoleDto } from './dto/create-role.dto';
 
 @Injectable()
 export class RoleService {
@@ -11,8 +12,13 @@ export class RoleService {
     private readonly _roleRepository: Repository<RoleEntity>,
   ) {}
 
-  async create() {
+  async create(createRoleDto: CreateRoleDto) {
     try {
+      const result = await this._roleRepository.save({
+        name: createRoleDto.name,
+        permissions: createRoleDto.permissions,
+      });
+      return result;
     } catch (error) {
       throw new BadRequestException(error.message);
     }
@@ -20,8 +26,8 @@ export class RoleService {
 
   async findAll() {
     try {
-      const result = await this._roleRepository.find();
-      return result;
+      const [result, count] = await this._roleRepository.findAndCount();
+      return new BaseResponse<RoleEntity>(result, { page: 1, totalRecord: count });
     } catch (error) {
       throw new BadRequestException(error.message);
     }
@@ -31,7 +37,7 @@ export class RoleService {
     try {
       const result = await this._roleRepository.findOne({ where: { id } });
       if (!result) throw new BadRequestException('Role not found');
-      return new BaseResponse<RoleEntity>(result, { page: 1 });
+      return new BaseResponse<RoleEntity>(result, { page: 1, totalRecord: 1 });
     } catch (error) {
       throw new BadRequestException(error.message);
     }

@@ -12,6 +12,10 @@ import { LogoutRequestDto } from './dto/logout-request.dto';
 import { RefreshTokenRequestDto } from './dto/refresh-token-request.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { PermissionEntity } from '@modules/permission/entities/permission.entity';
+import { RoleEntity } from '@modules/role/entities/role.entity';
+import { RoleDto } from '@modules/role/dto/role.dto';
+import { PermissionDto } from '@modules/permission/dto/permission.dto';
 
 @Injectable()
 export class AuthService {
@@ -23,6 +27,12 @@ export class AuthService {
 
     @InjectRepository(ProfileEntity)
     private readonly _profileRepository: Repository<ProfileEntity>,
+
+    @InjectRepository(PermissionEntity)
+    private readonly _permissionRepository: Repository<PermissionEntity>,
+
+    @InjectRepository(RoleEntity)
+    private readonly _roleRepository: Repository<RoleEntity>,
 
     private readonly _configService: ConfigService,
   ) {}
@@ -44,12 +54,14 @@ export class AuthService {
       if (!isMatchPassword) {
         throw new BadRequestException('Password is not correct');
       }
+      const roles = await this._roleRepository.find({ where: { account: existedAccount } });
+      const permissions = await this._permissionRepository.find({ where: { roles } });
       const accessToken: string = await this._jwtService.sign({
         accountId: existedAccount.id,
         userId: existedAccount.profile.id,
         email: loginRequestDto.email,
-        roles: [],
-        permissions: [],
+        roles: roles.map((role) => new RoleDto(role)),
+        permissions: permissions.map((permission) => new PermissionDto(permission)),
       });
       const refreshToken = await this._jwtService.sign(
         {
@@ -183,9 +195,15 @@ export class AuthService {
 
       await this._accountRepository.update(existedAccount.id, { refreshToken });
 
+      const roles = await this._roleRepository.find({ where: { account: existedAccount } });
+      const permissions = await this._permissionRepository.find({ where: { roles } });
+
       const accessToken: string = await this._jwtService.sign({
         email: isValidRefreshToken.email,
         accountId: existedAccount.id,
+        userId: existedAccount.profile.id,
+        roles: roles.map((role) => new RoleDto(role)),
+        permissions: permissions.map((permission) => new PermissionDto(permission)),
       });
       return { accessToken, refreshToken };
     } catch (error) {

@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Param, Delete, UseGuards, Body } from '@nestjs/common';
 import { RoleService } from './role.service';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ResponseMessage } from '@decorators/response.decorator';
 import { JwtAuthGuard } from '@guards/jwt-auth.guard';
+import { CreateRoleDto } from './dto/create-role.dto';
 
 @Controller('role')
 @ApiTags('Vai trò')
@@ -13,8 +14,8 @@ export class RoleController {
 
   @Post('create')
   @ApiOperation({ deprecated: true })
-  create() {
-    return this.roleService.create();
+  create(@Body() createRoleDto: CreateRoleDto) {
+    return this.roleService.create(createRoleDto);
   }
 
   @Get('get-all-role')

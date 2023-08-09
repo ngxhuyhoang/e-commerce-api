@@ -1,5 +1,5 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from '@guards/jwt-auth.guard';
 import { LoginRequestDto } from './dto/login-request.dto';
@@ -11,6 +11,7 @@ import { ResponseMessage } from '@decorators/response.decorator';
 import { RefreshTokenRequestDto } from './dto/refresh-token-request.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { LoginResponseDto } from './dto/login-response.dto';
 
 @Controller('auth')
 @ApiTags('Xác thực người dùng')
@@ -20,6 +21,7 @@ export class AuthController {
 
   @Post('login')
   @ApiOperation({ deprecated: false })
+  @ApiOkResponse({ description: 'Đăng nhập thành công', type: LoginResponseDto })
   @ResponseMessage('Đăng nhập thành công')
   @Public()
   async login(@Body() loginRequestDto: LoginRequestDto) {
