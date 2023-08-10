@@ -53,7 +53,6 @@ export class AuthService {
       if (!existedAccount) {
         throw new NotFoundException('User is not registered');
       }
-      console.log('existedAccount', existedAccount);
       const isMatchPassword = await bcrypt.compare(loginRequestDto.password, existedAccount.password);
       if (!isMatchPassword) {
         throw new BadRequestException('Password is not correct');
@@ -66,7 +65,11 @@ export class AuthService {
           account: true,
         },
       });
-      const permissions = await this._permissionRepository.find({ where: { roles } });
+      const permissions = await this._permissionRepository.find({
+        where: { roles },
+        relations: ['roles', 'roles.account'],
+      });
+      console.log('permissions', permissions);
       const accessToken: string = await this._jwtService.sign({
         accountId: existedAccount.id,
         userId: existedAccount.profile.id,
@@ -87,7 +90,6 @@ export class AuthService {
       await this._accountRepository.update(existedAccount.id, { refreshToken });
       return { accessToken, refreshToken: refreshToken };
     } catch (error) {
-      console.log(error);
       throw new BadRequestException(error.message);
     }
   }

@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Param, Delete, UseGuards, Body } from '@nestjs/common';
 import { PermissionService } from './permission.service';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Roles } from '@decorators/role.decorator';
 import { RolesGuard } from '@guards/role.guard';
 import { JwtAuthGuard } from '@guards/jwt-auth.guard';
+import { CreatePermissionDto } from './dto/create-permission.dto';
 
 @Controller('permission')
 @ApiTags('Quyền')
@@ -16,8 +17,8 @@ export class PermissionController {
   @Post()
   @Roles('Hahah')
   @ApiOperation({ deprecated: false })
-  create() {
-    return this.permissionService.create();
+  create(@Body() body: CreatePermissionDto) {
+    return this.permissionService.create(body);
   }
 
   @Get()

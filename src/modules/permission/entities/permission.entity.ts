@@ -12,10 +12,10 @@ export class PermissionEntity extends BasedEntity {
   @Index()
   description: string;
 
+  @Column()
+  apiMethod: string;
+
   @ManyToMany(() => RoleEntity, (role) => role.permissions)
   @JoinTable({ name: 'roles_and_permissions' })
   roles: RoleEntity[];
-
-  @Column()
-  apiMethod: string;
 }
