@@ -22,25 +22,25 @@ export class PermissionController {
   }
 
   @Get()
-  @ApiOperation({ deprecated: true })
+  @ApiOperation({ deprecated: false })
   findAll() {
     return this.permissionService.findAll();
   }
 
   @Get(':id')
-  @ApiOperation({ deprecated: true })
+  @ApiOperation({ deprecated: false })
   findOne(@Param('id') id: string) {
     return this.permissionService.findOne(+id);
   }
 
   @Patch(':id')
-  @ApiOperation({ deprecated: true })
+  @ApiOperation({ deprecated: false })
   update(@Param('id') id: string) {
     return this.permissionService.update(+id);
   }
 
   @Delete(':id')
-  @ApiOperation({ deprecated: true })
+  @ApiOperation({ deprecated: false })
   remove(@Param('id') id: string) {
     return this.permissionService.remove(+id);
   }

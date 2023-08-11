@@ -23,7 +23,7 @@ export class ProductController {
   }
 
   @Get()
-  @ApiOperation({ deprecated: true })
+  @ApiOperation({ deprecated: false })
   findAll() {
     return this.productService.findAll();
   }
@@ -43,7 +43,7 @@ export class ProductController {
   }
 
   @Delete(':id')
-  @ApiOperation({ deprecated: true })
+  @ApiOperation({ deprecated: false })
   remove(@Param('id') id: string) {
     return this.productService.remove(+id);
   }

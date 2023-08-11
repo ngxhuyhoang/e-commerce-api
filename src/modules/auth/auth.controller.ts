@@ -45,7 +45,7 @@ export class AuthController {
 
   @Post('reset-password')
   @ApiBearerAuth()
-  @ApiOperation({ deprecated: true })
+  @ApiOperation({ deprecated: false })
   async resetPassword(@Body() body: ResetPasswordDto) {
     return await this.authService.resetPassword(body);
   }
